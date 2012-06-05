@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="PartialSolver.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="3032" topLine="108" />
+	</File>
+	<File name="PartialSolver.hh" open="1" top="0" tabpos="6">
+		<Cursor position="496" topLine="6" />
+	</File>
+	<File name="Puzzle.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="12036" topLine="441" />
+	</File>
+	<File name="Puzzle.hh" open="1" top="0" tabpos="2">
+		<Cursor position="2988" topLine="52" />
+	</File>
+	<File name="SkyScraper.cc" open="1" top="0" tabpos="5">
+		<Cursor position="552" topLine="84" />
+	</File>
+	<File name="SkyScraper.hh" open="1" top="0" tabpos="4">
+		<Cursor position="313" topLine="11" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="484" topLine="2" />
+	</File>
+</CodeBlocks_layout_file>
