@@ -155,3 +155,55 @@ void PartialSolver::print()
     cout<<"Size Correct: "<<solved.size()<<endl;
     cout<<"Size Incorrect: "<<incorrect.size()<<endl;
 }
+
+void PartialSolver::boundaryFinder()
+{
+    map<string,int> boundMap;
+    for(list<Puzzle>::iterator it = solved.begin(); it!=solved.end(); it++)
+    {
+        stringstream boundkey, temp;
+        for(int x=0; x<number; x++)
+        {
+            boundkey << (*it).visableScore((*it).getRow(x));
+            temp << (*it).visableScore((*it).getRow(x, true));
+        }
+        boundkey << temp.str();
+        temp.str("");
+        for(int y=0; y<number; y++)
+        {
+            boundkey << (*it).visableScore((*it).getColumn(y));
+            temp << (*it).visableScore((*it).getColumn(y, true));
+        }
+        boundkey << temp.str();
+        string key = boundkey.str();
+        if(boundMap.find(key )!=boundMap.end())
+        {
+            boundMap[key]++;
+        }
+        else
+        {
+            boundMap[key] = 1;
+        }
+    }
+
+    int totalKeys(0), totalNum(0), totalUnique(0), upperLimit(0);
+    ofstream file("BoundaryKeys.txt");
+    map<string,int>::iterator it = boundMap.begin();
+    for(; it!=boundMap.end(); it++)
+    {
+        int num = (*it).second;
+        file<<(*it).first<<": "<<num<<endl;
+        totalNum += num;
+        totalKeys++;
+        if(num==1)
+            totalUnique++;
+        if(num>upperLimit)
+            upperLimit = num;
+
+    }
+    file<<"Total Number: "<<totalNum<<endl
+        <<"Total Keys: "<<totalKeys<<endl
+        <<"Total Unique: "<<totalUnique<<endl
+        <<"Upper Limit: "<<upperLimit<<endl;
+    file.close();
+}

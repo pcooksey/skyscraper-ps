@@ -26,7 +26,10 @@
 #define PARTIALSOLVER
 
 #include "Puzzle.hh"
-#include<list>
+#include <list>
+#include <map>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
 
@@ -50,6 +53,10 @@ class PartialSolver
 
         void solve();
         void print();
+
+        /// Used for puzzles with all zeros in the boundaries
+        /// After the puzzle has been solved
+        void boundaryFinder();
 };
 
 #endif
