@@ -50,6 +50,7 @@ int main()
             PartialSolver solver(puzzle);
             solver.solve();
             solver.print();
+            solver.boundaryFinder();
         }
 
     }
