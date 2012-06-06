@@ -54,5 +54,9 @@ int main()
         }
 
     }
+    else
+    {
+        cout<<"File not found!"<<endl;
+    }
     return 0;
 }
