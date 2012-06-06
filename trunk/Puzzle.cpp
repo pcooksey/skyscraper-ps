@@ -88,22 +88,26 @@ void Puzzle::crossCheck(int column, int find)
     {
         left = row[y].first;
         right = row[y].second;
-        int TopValue = visableMax(find,y,top,getColumn(column));
+        //int TopValue = visableMax(find,y,top,getColumn(column));
+        int TopValue = visibility(find,y,top,getColumn(column));
         if(TopValue<top)
         {
             remove(y, column, find);
         }
         else
         {
-            int BottomValue = visableMax(find,flipValue(y),bottom,getColumn(column,true));
+            //int BottomValue = visableMax(find,flipValue(y),bottom,getColumn(column,true));
+            int BottomValue = visibility(find,flipValue(y),bottom,getColumn(column,true));
             if(BottomValue<bottom)
             {
                 remove(y, column, find);
             }
             else
             {
-                int LeftValue = visableMax(find,column,left,getRow(y));
-                int RightValue = visableMax(find,flipValue(column),right,getRow(y,true));
+                //int LeftValue = visableMax(find,column,left,getRow(y));
+                //int RightValue = visableMax(find,flipValue(column),right,getRow(y,true));
+                int LeftValue = visibility(find,column,left,getRow(y));
+                int RightValue = visibility(find,flipValue(column),right,getRow(y,true));
                 if((LeftValue<left ) || (RightValue<right))
                 {
                     remove(y, column, find);
@@ -292,6 +296,82 @@ int Puzzle::visableMin(int findNum, int place, int maxValue, vector<SkyScraper*>
     return checkMin(objects,box,findNum);
 }
 
+int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*> objects)
+{
+    vector<SkyScraper> start(number,number);
+    if(objects.size()!=(unsigned int)number)
+        exit(-1);
+    ///Checks to see if number can be placed otherwise return -2
+    if(objects[place]->isPossible(findNum))
+    {
+        start[place].set(findNum);
+        remove(findNum, start);
+    }
+    else
+        return -2;
+
+    int nMax(1), nMin(number);
+    ///Checking for values that are already found
+    for(int i=1; i<=number; i++)
+    {
+        int index = checkOnly(i,objects);
+        if(index!=-1)
+        {
+            start[index].set(i);
+            remove(i, start);
+        }
+    }
+    list< vector<SkyScraper> > graph;
+    graph.push_back(start);
+    while(!graph.empty())
+    {
+        bool done = true;
+        vector<SkyScraper>& path = graph.front();
+        for(int i=0; i<number; i++)
+        {
+            if(!path[i].found())
+            {
+                const list<int>& possible = path[i].isPossible();
+                list<int>::const_iterator it = possible.begin();
+                for(; it!=possible.end(); it++)
+                {
+                    vector<SkyScraper> temp(path);
+                    temp[i].set((*it));
+                    remove((*it), temp);
+                    graph.push_back(temp);
+                }
+                done = false;
+            }
+        }
+        if(done)
+        {
+            int nTemp = visableScore(path);
+            nMax = max(nMax,nTemp);
+            nMin = min(nMin,nTemp);
+            if(nMax>=maxValue)
+                return nMax;
+        }
+        graph.pop_front();
+    }
+
+    if(nMax>=maxValue)
+    {
+        return nMax;
+    }
+    else
+    {
+        if(nMin<=maxValue)
+        {
+            return nMax;
+        }
+        else
+        {
+            ///Must be zero for 0 side numbers
+            return 0;
+        }
+    }
+}
+
 int Puzzle::checkMin(vector<SkyScraper*>& objects, vector<int>& box, int findNum)
 {
     int top = box[0];
@@ -349,6 +429,27 @@ int Puzzle::visableScore(vector<SkyScraper*> objects)
         if((*start)->number()>value)
         {
             value = (*start)->number();
+            score++;
+        }
+        if(value==number)
+        {
+            return score;
+        }
+    }
+    /// Should never reach here
+    return 0;
+}
+
+int Puzzle::visableScore(vector<SkyScraper> objects)
+{
+    vector<SkyScraper>::iterator start = objects.begin(),
+                                 end = objects.end();
+    int value(0), score(0);
+    for(; start!=end; start++)
+    {
+        if((*start).number()>value)
+        {
+            value = (*start).number();
             score++;
         }
         if(value==number)
@@ -452,6 +553,14 @@ void Puzzle::minusCol(int col, int num)
     }
 }
 
+void Puzzle::remove(int num, vector<SkyScraper>& objects)
+{
+    for(int i=0; i<number; i++)
+    {
+        objects[i].remove(num);
+    }
+}
+
 void Puzzle::print(bool loopPrint)
 {
     if(loopPrint)
@@ -479,7 +588,7 @@ bool Puzzle::loadFile()
     cin>>name;
     input.open(name.c_str());
     */
-    input.open("4/puzzlemax.txt");
+    input.open("puzzle6_3.txt");
     if(input.fail())
     {
         return false;
