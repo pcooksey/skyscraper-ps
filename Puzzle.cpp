@@ -21,6 +21,9 @@
 *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+/**
+*  Author: Philip Cooksey
+*/
 
 #include "Puzzle.hh"
 using namespace std;
@@ -586,12 +589,10 @@ bool Puzzle::loadFile()
 {
     ifstream input;
     string name;
-    /*
     cout<<"Enter in File Name: ";
     cin>>name;
     input.open(name.c_str());
-    */
-    input.open("puzzle6_3.txt");
+    //input.open("puzzle6_3.txt");
     if(input.fail())
     {
         return false;
