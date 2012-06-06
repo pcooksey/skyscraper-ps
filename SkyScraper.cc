@@ -116,6 +116,11 @@ bool SkyScraper::isPossible(int num) const
     return false;
 }
 
+const list<int>& SkyScraper::isPossible()
+{
+    return possible;
+}
+
 int SkyScraper::number()
 {
     return foundNumber;

@@ -46,6 +46,7 @@ class SkyScraper
         bool set(int num);
         bool found();
         bool isPossible(int num) const;
+        const list<int>& isPossible();
         void printPossible();
         int number();
 

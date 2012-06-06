@@ -140,16 +140,16 @@ void PartialSolver::solve()
 
 void PartialSolver::print()
 {
-    list<Puzzle>::iterator puzzle = solved.begin();
-    for(;puzzle!=solved.end(); puzzle++)
-    {
-        cout<<"Correct"<<endl;
-        puzzle->print(true);
-    }
-    puzzle = incorrect.begin();
+    list<Puzzle>::iterator puzzle = incorrect.begin();
     for(;puzzle!=incorrect.end(); puzzle++)
     {
         cout<<"Incorrect"<<endl;
+        puzzle->print(true);
+    }
+    puzzle = solved.begin();
+    for(;puzzle!=solved.end(); puzzle++)
+    {
+        cout<<"Correct"<<endl;
         puzzle->print(true);
     }
     cout<<"Size Correct: "<<solved.size()<<endl;
