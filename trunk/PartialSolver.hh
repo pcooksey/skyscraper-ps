@@ -54,8 +54,7 @@ class PartialSolver
         void solve();
         void print();
 
-        /// Used for puzzles with all zeros in the boundaries
-        /// After the puzzle has been solved
+        /// Used for puzzles with zeros in the boundaries
         void boundaryFinder();
 };
 
