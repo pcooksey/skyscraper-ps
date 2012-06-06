@@ -329,6 +329,8 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
         vector<SkyScraper>& path = graph.front();
         for(int i=0; i<number; i++)
         {
+            if(path[i]==number)
+                break;
             if(!path[i].found())
             {
                 const list<int>& possible = path[i].isPossible();
@@ -341,6 +343,7 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
                     graph.push_back(temp);
                 }
                 done = false;
+                break;
             }
         }
         if(done)
