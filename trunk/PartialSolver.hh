@@ -47,6 +47,10 @@ class PartialSolver
 
         void checkRow(int row, const Puzzle::Board& board);
         void checkColumn(int col, const Puzzle::Board& board);
+        /// Functions used to check if the board is partially correct as a
+        /// way of pruning the search.
+        bool partiallyCorrect(Puzzle& puzzle);
+        bool partiallyFinished(const vector<SkyScraper*>& path);
 
     public:
         PartialSolver(const Puzzle& puzzle);
