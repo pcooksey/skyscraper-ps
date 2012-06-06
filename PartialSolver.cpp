@@ -128,7 +128,9 @@ void PartialSolver::solve()
         }
         else
         {
-            puzzles.push_back(back);
+            ///If the puzzle is still partially correct continue search
+            if(partiallyCorrect(back))
+                puzzles.push_back(back);
         }
     }
     puzzles.pop_front();
@@ -206,4 +208,68 @@ void PartialSolver::boundaryFinder()
         <<"Total Unique: "<<totalUnique<<endl
         <<"Upper Limit: "<<upperLimit<<endl;
     file.close();
+}
+
+bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
+{
+    for(int row=0; row<number; row++)
+    {
+        if(puzzle.row[row].first!=0)
+        {
+            vector<SkyScraper*> left = puzzle.getRow(row);
+            if(partiallyFinished(left) &&
+                puzzle.row[row].first!=puzzle.visableScore(left))
+            {
+                return false;
+            }
+        }
+        if(puzzle.row[row].second!=0)
+        {
+            vector<SkyScraper*> right = puzzle.getRow(row,true);
+            if(partiallyFinished(right) &&
+                puzzle.row[row].second!=puzzle.visableScore(right))
+            {
+                return false;
+            }
+        }
+    }
+    for(int col=0; col<number; col++)
+    {
+        if(puzzle.col[col].first!=0)
+        {
+            vector<SkyScraper*> top = puzzle.getColumn(col);
+            if(partiallyFinished(top) &&
+                puzzle.col[col].first!=puzzle.visableScore(top))
+            {
+                return false;
+            }
+        }
+        if(puzzle.col[col].second!=0)
+        {
+            vector<SkyScraper*> bottom = puzzle.getColumn(col,true);
+            if(partiallyFinished(bottom) &&
+                puzzle.col[col].second!=puzzle.visableScore(bottom))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool PartialSolver::partiallyFinished(const vector<SkyScraper*>& path)
+{
+    bool passed = true;
+    vector<SkyScraper*>::const_iterator it;
+    for(it = path.begin(); it!=path.end(); it++)
+    {
+        if(!(*it)->found())
+        {
+            passed = false;
+            break;
+        }
+        if(*(*it)==number)
+            break;
+    }
+    return passed;
 }
