@@ -354,27 +354,20 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
             int nTemp = visableScore(path);
             nMax = max(nMax,nTemp);
             nMin = min(nMin,nTemp);
-            if(nMax>=maxValue)
+            if(nMax>=maxValue && nMin<=maxValue)
                 return nMax;
         }
         graph.pop_front();
     }
 
-    if(nMax>=maxValue)
+    if(nMax>=maxValue && nMin<=maxValue)
     {
         return nMax;
     }
     else
     {
-        if(nMin<=maxValue)
-        {
-            return nMax;
-        }
-        else
-        {
-            ///Must be zero for 0 side numbers
-            return 0;
-        }
+        ///Must be zero for 0 side numbers
+        return 0;
     }
 }
 
