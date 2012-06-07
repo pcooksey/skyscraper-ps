@@ -45,6 +45,7 @@ class PartialSolver
         int number;
         int variable;
         list< pair<int,int> > points;
+        map<string,int> boundMap;
 
         void findPoints(const Puzzle::Board& board);
 

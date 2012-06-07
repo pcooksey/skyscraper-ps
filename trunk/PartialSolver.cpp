@@ -122,11 +122,28 @@ void PartialSolver::solve()
         {
             if(back.correct())
             {
-                solved.push_back(back);
+                try
+                {
+                    solved.push_back(back);
+                }
+                catch( std::bad_alloc& e)
+                {
+                    boundaryFinder();
+                    solved.clear();
+                    solved.push_back(back);
+                }
             }
             else
             {
-                incorrect.push_back(back);
+                try
+                {
+                    incorrect.push_back(back);
+                }
+                catch( std::bad_alloc& e)
+                {
+                    incorrect.clear();
+                    incorrect.push_back(back);
+                }
             }
         }
         else
@@ -163,7 +180,7 @@ void PartialSolver::print()
 
 void PartialSolver::boundaryFinder()
 {
-    map<string,int> boundMap;
+    //map<string,int> boundMap;
     for(list<Puzzle>::iterator it = solved.begin(); it!=solved.end(); it++)
     {
         stringstream boundkey, temp;
