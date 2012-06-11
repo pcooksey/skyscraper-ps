@@ -180,7 +180,6 @@ void PartialSolver::print()
 
 void PartialSolver::boundaryFinder()
 {
-    //map<string,int> boundMap;
     for(list<Puzzle>::iterator it = solved.begin(); it!=solved.end(); it++)
     {
         stringstream boundkey, temp;
@@ -189,14 +188,14 @@ void PartialSolver::boundaryFinder()
             boundkey << (*it).visableScore((*it).getRow(x));
             temp << (*it).visableScore((*it).getRow(x, true));
         }
-        boundkey << temp.str();
+        boundkey <<","<< temp.str() <<",";
         temp.str("");
         for(int y=0; y<number; y++)
         {
             boundkey << (*it).visableScore((*it).getColumn(y));
             temp << (*it).visableScore((*it).getColumn(y, true));
         }
-        boundkey << temp.str();
+        boundkey <<","<< temp.str();
         string key = boundkey.str();
         if(boundMap.find(key )!=boundMap.end())
         {
@@ -209,12 +208,13 @@ void PartialSolver::boundaryFinder()
     }
 
     int totalKeys(0), totalNum(0), totalUnique(0), upperLimit(0);
-    ofstream file("BoundaryKeys.txt");
+    ofstream file("BoundaryKeys.csv");
+    file<<"Top,Bottom,Left,Right,#"<<endl;
     map<string,int>::iterator it = boundMap.begin();
     for(; it!=boundMap.end(); it++)
     {
         int num = (*it).second;
-        file<<(*it).first<<": "<<num<<endl;
+        file<<(*it).first<<", "<<num<<endl;
         totalNum += num;
         totalKeys++;
         if(num==1)
@@ -223,10 +223,12 @@ void PartialSolver::boundaryFinder()
             upperLimit = num;
 
     }
-    file<<"Total Number: "<<totalNum<<endl
-        <<"Total Keys: "<<totalKeys<<endl
-        <<"Total Unique: "<<totalUnique<<endl
-        <<"Upper Limit: "<<upperLimit<<endl;
+    file.close();
+    file.open("BoundaryStats.csv");
+    file<<"Total Number of Latin Squares, "<<totalNum<<endl
+        <<"Total Number of Boundaries, "<<totalKeys<<endl
+        <<"Total Unique Boundaries, "<<totalUnique<<endl
+        <<"Upper Limit of Branching, "<<upperLimit<<endl;
     file.close();
 }
 
