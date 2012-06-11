@@ -63,7 +63,7 @@
 1338861047 source:c:\users\philip\desktop\c++\skycraper-ps\partialsolver.cpp
 	"PartialSolver.hh"
 
-1339125113 source:c:\users\philip\desktop\c++\skyscraper-ps\puzzle.cpp
+1339433935 source:c:\users\philip\desktop\c++\skyscraper-ps\puzzle.cpp
 	"Puzzle.hh"
 
 1339022012 c:\users\philip\desktop\c++\skyscraper-ps\puzzle.hh
@@ -74,11 +74,11 @@
 	<set>
 	<fstream>
 
-1339022012 c:\users\philip\desktop\c++\skyscraper-ps\skyscraper.hh
+1339433700 c:\users\philip\desktop\c++\skyscraper-ps\skyscraper.hh
 	<list>
 	<iostream>
 
-1339022012 source:c:\users\philip\desktop\c++\skyscraper-ps\skyscraper.cc
+1339442165 source:c:\users\philip\desktop\c++\skyscraper-ps\skyscraper.cc
 	"SkyScraper.hh"
 
 1339023591 source:c:\users\philip\desktop\c++\skyscraper-ps\main.cpp
@@ -93,6 +93,6 @@
 	<sstream>
 	<iostream>
 
-1339125097 source:c:\users\philip\desktop\c++\skyscraper-ps\partialsolver.cpp
+1339436193 source:c:\users\philip\desktop\c++\skyscraper-ps\partialsolver.cpp
 	"PartialSolver.hh"
 

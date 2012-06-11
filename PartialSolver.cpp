@@ -106,58 +106,46 @@ void PartialSolver::findPoints(const Puzzle::Board& board)
 
 void PartialSolver::solve()
 {
-    Puzzle& front = puzzles.front();
-    ///Clear points to find points for next puzzle
-    points.clear();
-    findPoints(front.puzzle);
-    list< pair<int,int> >::iterator it = points.begin();
-    for(;it!=points.end(); it++)
+    while(!puzzles.empty())
     {
-        int row = (*it).first;
-        int col = (*it).second;
-        Puzzle back = Puzzle(front);
-        back.set(row, col, variable);
-        back.solve();
-        if(back.complete())
+        Puzzle& front = puzzles.front();
+        ///Clear points to find points for next puzzle
+        points.clear();
+        findPoints(front.puzzle);
+        list< pair<int,int> >::iterator it = points.begin();
+        for(;it!=points.end(); it++)
         {
-            if(back.correct())
+            int row = (*it).first;
+            int col = (*it).second;
+            Puzzle back = Puzzle(front);
+            back.set(row, col, variable);
+            back.solve();
+            if(back.complete())
             {
-                try
+                if(back.correct())
                 {
-                    solved.push_back(back);
+                        solved.push_back(back);
                 }
-                catch( std::bad_alloc& e)
+                else
                 {
-                    boundaryFinder();
-                    solved.clear();
-                    solved.push_back(back);
+                        incorrect.push_back(back);
                 }
             }
             else
             {
-                try
-                {
-                    incorrect.push_back(back);
-                }
-                catch( std::bad_alloc& e)
-                {
-                    incorrect.clear();
-                    incorrect.push_back(back);
-                }
+                ///If the puzzle is still partially correct continue search
+                if(partiallyCorrect(back))
+                    puzzles.push_back(back);
             }
         }
-        else
-        {
-            ///If the puzzle is still partially correct continue search
-            if(partiallyCorrect(back))
-                puzzles.push_back(back);
-        }
+        puzzles.pop_front();
     }
-    puzzles.pop_front();
+    /*
     if(!puzzles.empty())
     {
         solve();
     }
+    */
 }
 
 void PartialSolver::print()

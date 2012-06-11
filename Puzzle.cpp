@@ -39,7 +39,8 @@ Puzzle::Puzzle(const Puzzle& other)
 void Puzzle::init(int num)
 {
     number = num;
-    puzzle = vector< vector<SkyScraper> >(number, vector<SkyScraper>(number, number));
+    SkyScraper temp(number);
+    puzzle = vector< vector<SkyScraper> >(number, vector<SkyScraper>(number, temp));
 }
 
 bool Puzzle::solve()
@@ -585,7 +586,7 @@ bool Puzzle::loadFile()
     cout<<"Enter in File Name: ";
     cin>>name;
     input.open(name.c_str());
-    //input.open("puzzle6_3.txt");
+    //input.open("puzzleall5.txt");
     if(input.fail())
     {
         return false;
