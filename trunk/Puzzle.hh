@@ -50,10 +50,8 @@ class Puzzle
 
         ///These two function start the program
         void init(int num);
-        ///Checks if the outside values are valid
-        bool outside();
         ///This iteraters through the columns and cross checks every box
-        bool checkOutside();
+        bool checkInside();
 
         ///Cross checks the values of the top, bottom, left, and right
         void crossCheck(int column, int find);
@@ -97,6 +95,8 @@ class Puzzle
 
         ///Loads the file with the puzzle
         bool loadFile();
+        ///Checks if the outside values are valid
+        bool checkOutside();
         ///Function to solve the puzzle
         bool solve();
         ///Checks to see if every box has found a number
