@@ -140,12 +140,6 @@ void PartialSolver::solve()
         }
         puzzles.pop_front();
     }
-    /*
-    if(!puzzles.empty())
-    {
-        solve();
-    }
-    */
 }
 
 void PartialSolver::print()
