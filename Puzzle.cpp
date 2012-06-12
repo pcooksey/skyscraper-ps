@@ -45,11 +45,10 @@ void Puzzle::init(int num)
 
 bool Puzzle::solve()
 {
-    outside();
-    return true;
+    return checkInside();
 }
 
-bool Puzzle::outside()
+bool Puzzle::checkOutside()
 {
     /// Check if top and bottom is >= 6, can't happen
     for(unsigned int i=0; i<col.size(); i++)
@@ -65,11 +64,10 @@ bool Puzzle::outside()
         int right = row[i].second;
         if(left+right > number+1) return false;
     }
-    bool check = checkOutside();
-    return check;
+    return true;
 }
 
-bool Puzzle::checkOutside()
+bool Puzzle::checkInside()
 {
     ///Decending from number to 1
     for(int find=number; find>0; find--)
@@ -92,7 +90,6 @@ void Puzzle::crossCheck(int column, int find)
     {
         left = row[y].first;
         right = row[y].second;
-        //int TopValue = visableMax(find,y,top,getColumn(column));
         int TopValue = visibility(find,y,top,getColumn(column));
         if(TopValue<top)
         {
@@ -100,7 +97,6 @@ void Puzzle::crossCheck(int column, int find)
         }
         else
         {
-            //int BottomValue = visableMax(find,flipValue(y),bottom,getColumn(column,true));
             int BottomValue = visibility(find,flipValue(y),bottom,getColumn(column,true));
             if(BottomValue<bottom)
             {
@@ -108,8 +104,6 @@ void Puzzle::crossCheck(int column, int find)
             }
             else
             {
-                //int LeftValue = visableMax(find,column,left,getRow(y));
-                //int RightValue = visableMax(find,flipValue(column),right,getRow(y,true));
                 int LeftValue = visibility(find,column,left,getRow(y));
                 int RightValue = visibility(find,flipValue(column),right,getRow(y,true));
                 if((LeftValue<left ) || (RightValue<right))
@@ -586,7 +580,7 @@ bool Puzzle::loadFile()
     cout<<"Enter in File Name: ";
     cin>>name;
     input.open(name.c_str());
-    //input.open("puzzleall5.txt");
+    //input.open("puzzlehard2.txt");
     if(input.fail())
     {
         return false;

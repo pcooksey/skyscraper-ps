@@ -36,6 +36,7 @@ int main()
     bool success = puzzle.loadFile();
     if(success)
     {
+        puzzle.checkOutside();
         puzzle.solve();
         if(puzzle.complete())
         {
