@@ -577,10 +577,12 @@ bool Puzzle::loadFile()
 {
     ifstream input;
     string name;
+    /*
     cout<<"Enter in File Name: ";
     cin>>name;
     input.open(name.c_str());
-    //input.open("puzzlehard2.txt");
+    */
+    input.open("4/puzzletest1.txt");
     if(input.fail())
     {
         return false;
