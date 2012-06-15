@@ -51,6 +51,7 @@ int main()
         {
             cout<<"Partially Solved"<<endl;
             puzzle.print(true);
+            //cin.sync(); cin.get();
             PartialSolver solver(puzzle);
             solver.solve();
             solver.print();
