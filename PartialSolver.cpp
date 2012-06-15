@@ -167,15 +167,15 @@ void PartialSolver::boundaryFinder()
         stringstream boundkey, temp;
         for(int x=0; x<number; x++)
         {
-            boundkey << (*it).visableScore((*it).getRow(x));
-            temp << (*it).visableScore((*it).getRow(x, true));
+            boundkey << (*it).visableScore((*it).getColumn(x));
+            temp << (*it).visableScore((*it).getColumn(x, true));
         }
         boundkey <<","<< temp.str() <<",";
         temp.str("");
         for(int y=0; y<number; y++)
         {
-            boundkey << (*it).visableScore((*it).getColumn(y));
-            temp << (*it).visableScore((*it).getColumn(y, true));
+            boundkey << (*it).visableScore((*it).getRow(y));
+            temp << (*it).visableScore((*it).getRow(y, true));
         }
         boundkey <<","<< temp.str();
         string key = boundkey.str();
