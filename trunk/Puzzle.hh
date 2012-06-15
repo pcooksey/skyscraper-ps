@@ -55,14 +55,8 @@ class Puzzle
 
         ///Cross checks the values of the top, bottom, left, and right
         void crossCheck(int column, int find);
-        ///Finds the max visabiliy of a row or column
-        int visableMax(int findNum, int place, int maxValue, vector<SkyScraper*> objects);
-        ///Finds the min visibility of a row or column
-        int visableMin(int findNum, int place, int maxValue, vector<SkyScraper*> objects);
         ///Finds the max and min visibility for checking if @findNum can be placed
         int visibility(int findNum, int place, int maxValue, vector<SkyScraper*> objects);
-        ///Test to check visableMin for being the smallest
-        int checkMin(vector<SkyScraper*>& objects, vector<int>& box, int findNum);
         ///Returns the visibility score a row of numbers
         ///Ex: 3 2 4 1 = 2 visabiliy from the right
         int visableScore(vector<int>& box);

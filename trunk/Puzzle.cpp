@@ -144,156 +144,6 @@ void Puzzle::crossCheck(int column, int find)
     }
 }
 
-int Puzzle::visableMax(int findNum, int place, int maxValue, vector<SkyScraper*> objects)
-{
-    if(objects.size()!=(unsigned int)number)
-        exit(-1);
-    ///Set used to keep track of numbers that are used
-    std::set<int> found;
-    vector<int> box(number, 0);
-    ///Checks to see if number can be placed otherwise return -2
-    if(objects[place]->isPossible(findNum))
-        box[place] = findNum;
-    else
-        return -2;
-    ///Add numbers already found to box and found set
-    found.insert(findNum);
-    for(int i=1; i<=number; i++)
-    {
-        int index = checkOnly(i,objects);
-        if(index!=-1)
-        {
-            box[index] = i;
-            found.insert(i);
-        }
-    }
-    ///Going from 1 to number
-    for(int find=1, object = 0; find<=number && object<number; find++)
-    {
-        while(objects[object]->found() || box[object]!=0)
-        {
-            if(objects[object]->number()>=find)
-                find = objects[object]->number()+1;
-            if(box[object]>=find)
-                find = box[object]+1;
-            object++;
-            if(object>=number) break;
-        }
-        if(found.find(find)==found.end() && object<number && find<=number)
-        {
-            if(objects[object]->isPossible(find) && box[object]==0)
-            {
-                box[object] = find;
-                object++;
-                found.insert(find);
-            }
-        }
-    }
-    for(int find=number; find>0; find--)
-    {
-        if(found.find(find)==found.end())
-        {
-            for(int tempObj = (find-1); tempObj>=0; tempObj--)
-            {
-                if(objects[tempObj]->isPossible(find) && box[tempObj]==0)
-                {
-                    box[tempObj] = find;
-                    break;
-                }
-            }
-        }
-    }
-    int maxScore = visableScore(box);
-    int minScore = visableMin(findNum,place, maxValue, objects);
-    if(minScore>maxScore)
-    {
-        swap(maxScore,minScore);
-    }
-    if(maxScore<=maxValue)
-    {
-        return maxScore;
-    }
-    else
-    {
-        if(minScore<=maxValue)
-        {
-            return maxScore;
-        }
-        else
-        {
-            ///Must be zero for 0 side numbers
-            return 0;
-        }
-    }
-}
-
-int Puzzle::visableMin(int findNum, int place, int maxValue, vector<SkyScraper*> objects)
-{
-    if(objects.size()!=(unsigned int)number)
-        exit(-1);
-    ///Set used to keep track of numbers that are used
-    std::set<int> found;
-    vector<int> box(number, 0);
-    ///Checks to see if number can be placed otherwise return -2
-    if(objects[place]->isPossible(findNum))
-        box[place] = findNum;
-    else
-        return -2;
-    ///Add numbers already found to box and found set
-    found.insert(findNum);
-    for(int i=1; i<=number; i++)
-    {
-        int index = checkOnly(i,objects);
-        if(index!=-1)
-        {
-            box[index] = i;
-            found.insert(i);
-        }
-    }
-    ///Going from number to 1
-    for(int find=number, object = 0; find>0 && object<number; find--)
-    {
-        while(objects[object]->found() || box[object]!=0)
-        {
-            if(objects[object]->number()<=find)
-                find = objects[object]->number()-1;
-            if(box[object]<=find)
-                find = box[object]-1;
-            object++;
-            if(object>=number) break;
-        }
-        if(found.find(find)==found.end() && object<number && find>0)
-        {
-            for(int tempObj=object; tempObj<number; tempObj++)
-            {
-                if(objects[tempObj]->isPossible(find) && box[tempObj]==0)
-                {
-                    box[tempObj] = find;
-                    if(tempObj==object)
-                        object++;
-                    found.insert(find);
-                    break;
-                }
-            }
-        }
-    }
-    for(int find=number; find>0; find--)
-    {
-        if(found.find(find)==found.end())
-        {
-            for(int tempObj = 0; tempObj<number; tempObj++)
-            {
-                if(objects[tempObj]->isPossible(find) && box[tempObj]==0)
-                {
-                    box[tempObj] = find;
-                    break;
-                }
-            }
-        }
-    }
-    return checkMin(objects,box,findNum);
-}
-
 int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*> objects)
 {
     vector<SkyScraper> start(number,number);
@@ -353,32 +203,6 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
     }
 
     return 0;
-}
-
-int Puzzle::checkMin(vector<SkyScraper*>& objects, vector<int>& box, int findNum)
-{
-    int top = box[0];
-    for(int object=1; object<number; object++)
-    {
-        if(!objects[object]->found() && box[object]!=findNum)
-        {
-            if(box[object]==number)
-                return visableScore(box);
-            else if(box[object]>top && box[object]!=findNum)
-            {
-                for(int test = object+1; test<number; test++)
-                {
-                    if(box[test]<top
-                       && objects[test]->isPossible(box[object])
-                       && objects[object]->isPossible(box[test]))
-                    {
-                        swap(box[object], box[test]);
-                    }
-                }
-            }
-        }
-    }
-    return visableScore(box);
 }
 
 int Puzzle::visableScore(vector<int>& box)
@@ -571,7 +395,7 @@ bool Puzzle::loadFile()
     cin>>name;
     input.open(name.c_str());
     */
-    input.open("4/puzzletest4.txt");
+    input.open("4/puzzletest3.txt");
     if(input.fail())
     {
         return false;
