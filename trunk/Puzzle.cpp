@@ -308,7 +308,6 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
     else
         return -2;
 
-    int nMax(1), nMin(number);
     ///Checking for values that are already found
     for(int i=1; i<=number; i++)
     {
@@ -347,23 +346,13 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
         if(done)
         {
             int nTemp = visableScore(path);
-            nMax = max(nMax,nTemp);
-            nMin = min(nMin,nTemp);
-            if(nMax>=maxValue && nMin<=maxValue)
-                return nMax;
+            if(nTemp==maxValue)
+                return nTemp;
         }
         graph.pop_front();
     }
 
-    if(nMax>=maxValue && nMin<=maxValue)
-    {
-        return nMax;
-    }
-    else
-    {
-        ///Must be zero for 0 side numbers
-        return 0;
-    }
+    return 0;
 }
 
 int Puzzle::checkMin(vector<SkyScraper*>& objects, vector<int>& box, int findNum)
@@ -582,7 +571,7 @@ bool Puzzle::loadFile()
     cin>>name;
     input.open(name.c_str());
     */
-    input.open("4/puzzletest1.txt");
+    input.open("4/puzzletest4.txt");
     if(input.fail())
     {
         return false;

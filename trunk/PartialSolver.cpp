@@ -190,7 +190,7 @@ void PartialSolver::boundaryFinder()
     }
 
     int totalKeys(0), totalNum(0), totalUnique(0), upperLimit(0);
-    ofstream file("BoundaryKeys.csv");
+    ofstream file("BoundaryKeys.csv"), uniqueFile("UniqueKeys.csv");
     file<<"Top,Bottom,Left,Right,#"<<endl;
     map<string,int>::iterator it = boundMap.begin();
     for(; it!=boundMap.end(); it++)
@@ -200,7 +200,10 @@ void PartialSolver::boundaryFinder()
         totalNum += num;
         totalKeys++;
         if(num==1)
+        {
             totalUnique++;
+            uniqueFile<<(*it).first<<endl;
+        }
         if(num>upperLimit)
             upperLimit = num;
 
