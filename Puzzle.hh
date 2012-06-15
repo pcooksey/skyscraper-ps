@@ -67,6 +67,7 @@ class Puzzle
         ///Returns a column of pointers that can be fliped
         vector<SkyScraper*> getColumn(int column, bool flip=false);
         ///Checks if @num is the only one in the box of numbers
+        ///@returns -1 if not the only one otherwise @returns index
         int checkOnly(int num, vector<SkyScraper*>& box);
 
 

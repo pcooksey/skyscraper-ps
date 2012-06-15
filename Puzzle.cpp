@@ -90,22 +90,18 @@ void Puzzle::crossCheck(int column, int find)
     {
         left = row[y].first;
         right = row[y].second;
-        //int TopValue = visibility(find,y,top,getColumn(column));
         if(top!=0 && visibility(find,y,top,getColumn(column))<top)
         {
             remove(y, column, find);
         }
         else
         {
-            //int BottomValue = visibility(find,flipValue(y),bottom,getColumn(column,true));
             if(bottom!=0 && visibility(find,flipValue(y),bottom,getColumn(column,true))<bottom)
             {
                 remove(y, column, find);
             }
             else
             {
-                //int LeftValue = visibility(find,column,left,getRow(y));
-                //int RightValue = visibility(find,flipValue(column),right,getRow(y,true));
                 if((left!=0 && visibility(find,column,left,getRow(y))<left ) ||
                    (right!=0 && visibility(find,flipValue(column),right,getRow(y,true))<right))
                 {
@@ -463,6 +459,14 @@ bool Puzzle::correct()
             return false;
         else if(bottom!=visableScore(getColumn(column,true)) && bottom!=0)
             return false;
+        vector<SkyScraper*> columnPath = getColumn(column);
+        for(int i=1; i<number; i++)
+        {
+            if(checkOnly(i,columnPath)<0)
+            {
+                return false;
+            }
+        }
     }
 
     for(int rowNum=0; rowNum<number; rowNum++)
@@ -473,6 +477,14 @@ bool Puzzle::correct()
             return false;
         else if(right!=visableScore(getRow(rowNum,true)) && right!=0)
             return false;
+        vector<SkyScraper*> rowPath = getRow(rowNum);
+        for(int i=1; i<number; i++)
+        {
+            if(checkOnly(i,rowPath)<0)
+            {
+                return false;
+            }
+        }
     }
     return true;
 }
