@@ -90,23 +90,24 @@ void Puzzle::crossCheck(int column, int find)
     {
         left = row[y].first;
         right = row[y].second;
-        int TopValue = visibility(find,y,top,getColumn(column));
-        if(TopValue<top)
+        //int TopValue = visibility(find,y,top,getColumn(column));
+        if(top!=0 && visibility(find,y,top,getColumn(column))<top)
         {
             remove(y, column, find);
         }
         else
         {
-            int BottomValue = visibility(find,flipValue(y),bottom,getColumn(column,true));
-            if(BottomValue<bottom)
+            //int BottomValue = visibility(find,flipValue(y),bottom,getColumn(column,true));
+            if(bottom!=0 && visibility(find,flipValue(y),bottom,getColumn(column,true))<bottom)
             {
                 remove(y, column, find);
             }
             else
             {
-                int LeftValue = visibility(find,column,left,getRow(y));
-                int RightValue = visibility(find,flipValue(column),right,getRow(y,true));
-                if((LeftValue<left ) || (RightValue<right))
+                //int LeftValue = visibility(find,column,left,getRow(y));
+                //int RightValue = visibility(find,flipValue(column),right,getRow(y,true));
+                if((left!=0 && visibility(find,column,left,getRow(y))<left ) ||
+                   (right!=0 && visibility(find,flipValue(column),right,getRow(y,true))<right))
                 {
                     remove(y, column, find);
                 }
@@ -395,7 +396,7 @@ bool Puzzle::loadFile()
     cin>>name;
     input.open(name.c_str());
     */
-    input.open("4/puzzletest3.txt");
+    input.open("8/puzzlehard2.txt");
     if(input.fail())
     {
         return false;
