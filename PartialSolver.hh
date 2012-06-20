@@ -39,30 +39,71 @@ using namespace std;
 class PartialSolver
 {
     private:
+        /**
+        *   List containers that store the puzzles
+        *   @puzzles are not finished, @solved are correct,
+        *   and @incorrect are puzzles finished incorrectly.
+        */
         list<Puzzle> puzzles;
         list<Puzzle> solved;
         list<Puzzle> incorrect;
+        /**
+        *   @number is the variable => n in nxn board.
+        */
         int number;
+        /**
+        *   @variable is the current number to be placed in
+        *   the top @puzzle with the @points being the different
+        *   positions in the board.
+        */
         int variable;
         list< pair<int,int> > points;
+        /**
+        *   @boundMap stores all the @solved puzzles boundary conditions
+        *   as a key(string) so that we can see if it is unique or not shown
+        *   by the int.
+        */
         map<string,int> boundMap;
-
+        /**
+        *   Finds the @points and @variable for the const board.
+        */
         void findPoints(const Puzzle::Board& board);
-
+        /**
+        *   Finds the @points for the @variable in either a row
+        *   or a column.
+        */
         void checkRow(int row, const Puzzle::Board& board);
         void checkColumn(int col, const Puzzle::Board& board);
-        /// Functions used to check if the board is partially correct as a
-        /// way of pruning the search.
+        /**
+        *   Function used to check if the board is partially correct as a
+        *   way of pruning the search. It check to see if the row or column
+        *   is @pariallyFinished and then sees if the visiability is correct.
+        */
         bool partiallyCorrect(Puzzle& puzzle);
+        /**
+        *   Check if the path has the numbers found up to the highest number.
+        *   Ex:  2,1,4,? is partially finished because from the right persepctive
+        *   we don't care about seeing over the 4.
+        */
         bool partiallyFinished(const vector<SkyScraper*>& path);
 
     public:
+        /**
+        *   Default constructor copys partial puzzle.
+        */
         PartialSolver(const Puzzle& puzzle);
-
+        /**
+        *   Solved the puzzle by breath-first searching the possible partial puzzles.
+        */
         void solve();
+        /**
+        *   Prints the incorrect puzzles and then the correct puzzles.
+        */
         void print();
-
-        /// Used for puzzles with zeros in the boundaries
+        /**
+        *   Finds the boundary conditions for all of the solved puzzles. This is mostly
+        *   used getting data on all possible puzzles for some n.
+        */
         void boundaryFinder();
 };
 
