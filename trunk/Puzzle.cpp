@@ -202,27 +202,6 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
     return 0;
 }
 
-int Puzzle::visableScore(vector<int>& box)
-{
-    vector<int>::iterator start = box.begin(),
-                          end = box.end();
-    int value(0), score(0);
-    for(; start!=end; start++)
-    {
-        if((*start)>value)
-        {
-            value = (*start);
-            score++;
-        }
-        if(value==number)
-        {
-            return score;
-        }
-    }
-    /// Should never reach here
-    return score + (value-number);
-}
-
 int Puzzle::visableScore(vector<SkyScraper*> objects)
 {
     vector<SkyScraper*>::iterator start = objects.begin(),
@@ -244,16 +223,17 @@ int Puzzle::visableScore(vector<SkyScraper*> objects)
     return 0;
 }
 
-int Puzzle::visableScore(vector<SkyScraper> objects)
+template<typename entry>
+int Puzzle::visableScore(const vector<entry>& objects)
 {
-    vector<SkyScraper>::iterator start = objects.begin(),
+    typename vector<entry>::const_iterator start = objects.begin(),
                                  end = objects.end();
     int value(0), score(0);
     for(; start!=end; start++)
     {
-        if((*start).number()>value)
+        if((*start)>value)
         {
-            value = (*start).number();
+            value = (*start);
             score++;
         }
         if(value==number)
@@ -387,10 +367,12 @@ bool Puzzle::loadFile()
 {
     ifstream input;
     string name;
+    /*
     cout<<"Enter in File Name: ";
     cin>>name;
     input.open(name.c_str());
-    //input.open("4/puzzletest4.txt");
+    */
+    input.open("4/puzzletest4.txt");
     if(input.fail())
     {
         return false;
