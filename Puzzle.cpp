@@ -317,11 +317,7 @@ void Puzzle::minusRow(int row, int num)
 {
     for(int i=0; i<number; i++)
     {
-        if(puzzle[row][i].remove(num))
-        {
-            minusRow(row, puzzle[row][i].number());
-            minusCol(i, puzzle[row][i].number());
-        }
+        puzzle[row][i].remove(num);
     }
 }
 
@@ -329,11 +325,7 @@ void Puzzle::minusCol(int col, int num)
 {
     for(int i=0; i<number; i++)
     {
-        if(puzzle[i][col].remove(num))
-        {
-            minusRow(i, puzzle[i][col].number());
-            minusCol(col, puzzle[i][col].number());
-        }
+        puzzle[i][col].remove(num);
     }
 }
 
