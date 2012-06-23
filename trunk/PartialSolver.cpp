@@ -118,26 +118,29 @@ void PartialSolver::solve()
             int row = (*it).first;
             int col = (*it).second;
             Puzzle back = Puzzle(front);
-            //vector<SkyScraper*> path = puzzle.getRow(row);
-            //if(back.visibility(variable,col,,path))
-            back.set(row, col, variable);
-            back.solve();
-            if(back.complete())
+            try
             {
-                if(back.correct())
+                back.set(row, col, variable);
+                back.solve();
+                if(back.complete())
                 {
-                        solved.push_back(back);
+                    if(back.correct())
+                    {
+                            solved.push_back(back);
+                    }
+                    else
+                    {
+                            incorrect.push_back(back);
+                    }
                 }
                 else
                 {
-                        incorrect.push_back(back);
+                    ///If the puzzle is still partially correct continue search
+                    if(partiallyCorrect(back))
+                        puzzles.push_back(back);
                 }
-            }
-            else
-            {
-                ///If the puzzle is still partially correct continue search
-                if(partiallyCorrect(back))
-                    puzzles.push_back(back);
+            } catch (bool& value) {
+                //incorrect.push_back(back);
             }
         }
         puzzles.pop_front();

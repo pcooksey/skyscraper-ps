@@ -94,20 +94,14 @@ void Puzzle::crossCheck(int column, int find)
         {
             remove(y, column, find);
         }
-        else
+        else if(bottom!=0 && visibility(find,flipValue(y),bottom,getColumn(column,true))<bottom)
         {
-            if(bottom!=0 && visibility(find,flipValue(y),bottom,getColumn(column,true))<bottom)
-            {
-                remove(y, column, find);
-            }
-            else
-            {
-                if((left!=0 && visibility(find,column,left,getRow(y))<left ) ||
-                   (right!=0 && visibility(find,flipValue(column),right,getRow(y,true))<right))
-                {
-                    remove(y, column, find);
-                }
-            }
+            remove(y, column, find);
+        }
+        else if((left!=0 && visibility(find,column,left,getRow(y))<left ) ||
+                (right!=0 && visibility(find,flipValue(column),right,getRow(y,true))<right))
+        {
+            remove(y, column, find);
         }
         print();
         vector<SkyScraper*> columnBox = getColumn(column);
@@ -139,6 +133,29 @@ void Puzzle::crossCheck(int column, int find)
             }
          }
     }
+}
+
+bool Puzzle::crossCheckEntry(int row, int column)
+{
+    int top, bottom, left, right;
+    top = col[column].first;
+    bottom = col[column].second;
+    left = this->row[row].first;
+    right = this->row[row].second;
+    if(top!=0 && visibility(top,getColumn(column))<top)
+    {
+        return false;
+    }
+    else if(bottom!=0 && visibility(bottom,getColumn(column,true))<bottom)
+    {
+        return false;
+    }
+    else if((left!=0 && visibility(left,getRow(row))<left ) ||
+            (right!=0 && visibility(right,getRow(row,true))<right))
+    {
+        return false;
+    }
+    return true;
 }
 
 int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*> objects)
@@ -199,6 +216,55 @@ int Puzzle::visibility(int findNum, int place, int maxValue, vector<SkyScraper*>
         graph.pop_front();
     }
 
+    return 0;
+}
+
+int Puzzle::visibility(int maxValue, vector<SkyScraper*> objects)
+{
+    vector<SkyScraper> start(number,number);
+    ///Checking for values that are already found
+    for(int i=1; i<=number; i++)
+    {
+        int index = checkOnly(i,objects);
+        if(index!=-1)
+        {
+            start[index].set(i);
+            remove(i, start);
+        }
+    }
+    list< vector<SkyScraper> > graph;
+    graph.push_back(start);
+    while(!graph.empty())
+    {
+        bool done = true;
+        vector<SkyScraper>& path = graph.front();
+        for(int i=0; i<number; i++)
+        {
+            if(path[i]==number)
+                break;
+            if(!path[i].found())
+            {
+                const list<int>& possible = path[i].isPossible();
+                list<int>::const_iterator it = possible.begin();
+                for(; it!=possible.end(); it++)
+                {
+                    vector<SkyScraper> temp(path);
+                    temp[i].set((*it));
+                    remove((*it), temp);
+                    graph.push_back(temp);
+                }
+                done = false;
+                break;
+            }
+        }
+        if(done)
+        {
+            int nTemp = visableScore(path);
+            if(nTemp==maxValue)
+                return nTemp;
+        }
+        graph.pop_front();
+    }
     return 0;
 }
 
@@ -296,6 +362,10 @@ bool Puzzle::remove(int row, int column, int num)
     bool only = puzzle[row][column].remove(num);
     if(only)
     {
+        if(!crossCheckEntry(row, column))
+        {
+            throw false;
+        }
         minusCol(column, puzzle[row][column].number());
         minusRow(row, puzzle[row][column].number());
     }
@@ -317,7 +387,7 @@ void Puzzle::minusRow(int row, int num)
 {
     for(int i=0; i<number; i++)
     {
-        puzzle[row][i].remove(num);
+        remove(row,i,num);
     }
 }
 
@@ -325,7 +395,7 @@ void Puzzle::minusCol(int col, int num)
 {
     for(int i=0; i<number; i++)
     {
-        puzzle[i][col].remove(num);
+        remove(i,col,num);
     }
 }
 
@@ -364,7 +434,7 @@ bool Puzzle::loadFile()
     cin>>name;
     input.open(name.c_str());
     */
-    input.open("4/puzzletest4.txt");
+    input.open("6/puzzletest1.txt");
     if(input.fail())
     {
         return false;
