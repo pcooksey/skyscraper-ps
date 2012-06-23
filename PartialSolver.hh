@@ -85,7 +85,7 @@ class PartialSolver
         *   Ex:  2,1,4,? is partially finished because from the right persepctive
         *   we don't care about seeing over the 4.
         */
-        bool partiallyFinished(const vector<SkyScraper*>& path);
+        int partiallyFinished(const vector<SkyScraper*>& path);
 
     public:
         /**

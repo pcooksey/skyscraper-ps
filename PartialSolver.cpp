@@ -118,6 +118,8 @@ void PartialSolver::solve()
             int row = (*it).first;
             int col = (*it).second;
             Puzzle back = Puzzle(front);
+            //vector<SkyScraper*> path = puzzle.getRow(row);
+            //if(back.visibility(variable,col,,path))
             back.set(row, col, variable);
             back.solve();
             if(back.complete())
@@ -224,8 +226,7 @@ bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
         if(puzzle.row[row].first!=0)
         {
             vector<SkyScraper*> left = puzzle.getRow(row);
-            if(partiallyFinished(left) &&
-                puzzle.row[row].first!=puzzle.visableScore(left))
+            if(puzzle.row[row].first<partiallyFinished(left))
             {
                 return false;
             }
@@ -233,8 +234,7 @@ bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
         if(puzzle.row[row].second!=0)
         {
             vector<SkyScraper*> right = puzzle.getRow(row,true);
-            if(partiallyFinished(right) &&
-                puzzle.row[row].second!=puzzle.visableScore(right))
+            if(puzzle.row[row].second<partiallyFinished(right))
             {
                 return false;
             }
@@ -245,8 +245,7 @@ bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
         if(puzzle.col[col].first!=0)
         {
             vector<SkyScraper*> top = puzzle.getColumn(col);
-            if(partiallyFinished(top) &&
-                puzzle.col[col].first!=puzzle.visableScore(top))
+            if(puzzle.col[col].first<partiallyFinished(top))
             {
                 return false;
             }
@@ -254,8 +253,7 @@ bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
         if(puzzle.col[col].second!=0)
         {
             vector<SkyScraper*> bottom = puzzle.getColumn(col,true);
-            if(partiallyFinished(bottom) &&
-                puzzle.col[col].second!=puzzle.visableScore(bottom))
+            if(puzzle.col[col].second<partiallyFinished(bottom))
             {
                 return false;
             }
@@ -264,19 +262,21 @@ bool PartialSolver::partiallyCorrect(Puzzle& puzzle)
     return true;
 }
 
-bool PartialSolver::partiallyFinished(const vector<SkyScraper*>& path)
+int PartialSolver::partiallyFinished(const vector<SkyScraper*>& path)
 {
-    bool passed = true;
+    int value(0), score(0);
     vector<SkyScraper*>::const_iterator it;
     for(it = path.begin(); it!=path.end(); it++)
     {
-        if(!(*it)->found())
+        if(!(*it)->found() || *(*it)==number)
         {
-            passed = false;
-            break;
+            return score;
         }
-        if(*(*it)==number)
-            break;
+        else if((*it)->number()>value)
+        {
+            value = (*it)->number();
+            score++;
+        }
     }
-    return passed;
+    return score;
 }
