@@ -59,9 +59,9 @@ class Puzzle
         int visibility(int findNum, int place, int maxValue, vector<SkyScraper*> objects);
         ///Returns the visibility score a row of numbers
         ///Ex: 3 2 4 1 = 2 visabiliy from the right
-        int visableScore(vector<int>& box);
         int visableScore(vector<SkyScraper*> objects);
-        int visableScore(vector<SkyScraper> objects);
+        template<typename entry>
+        int visableScore(const vector<entry>& objects);
         ///Returns a row of pointers that can be fliped
         vector<SkyScraper*> getRow(int row, bool flip=false);
         ///Returns a column of pointers that can be fliped
