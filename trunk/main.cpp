@@ -37,25 +37,30 @@ int main()
     if(success)
     {
         puzzle.checkOutside();
-        puzzle.solve();
-        if(puzzle.complete())
+        try
         {
-            cout<<"Completely Solved"<<endl;
-            if(!puzzle.correct())
+            puzzle.solve();
+            if(puzzle.complete())
             {
-                cout<<"Not Correct!"<<endl;
+                cout<<"Completely Solved"<<endl;
+                if(!puzzle.correct())
+                {
+                    cout<<"Not Correct!"<<endl;
+                }
+                puzzle.print(true);
             }
-            puzzle.print(true);
-        }
-        else
-        {
-            cout<<"Partially Solved"<<endl;
-            puzzle.print(true);
-            //cin.sync(); cin.get();
-            PartialSolver solver(puzzle);
-            solver.solve();
-            solver.print();
-            solver.boundaryFinder();
+            else
+            {
+                cout<<"Partially Solved"<<endl;
+                puzzle.print(true);
+                //cin.sync(); cin.get();
+                PartialSolver solver(puzzle);
+                solver.solve();
+                solver.print();
+                solver.boundaryFinder();
+            }
+        } catch (bool &err) {
+            cout<<"Failed to solve!";
         }
 
     }
