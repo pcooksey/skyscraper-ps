@@ -34,6 +34,7 @@ Puzzle::Puzzle(const Puzzle& other)
     col = other.col;
     row = other.row;
     puzzle = Board(other.puzzle.begin(), other.puzzle.end());
+    loaded = true;
 }
 
 void Puzzle::init(int num)
@@ -362,7 +363,7 @@ bool Puzzle::remove(int row, int column, int num)
     bool only = puzzle[row][column].remove(num);
     if(only)
     {
-        if(!crossCheckEntry(row, column))
+        if(loaded && !crossCheckEntry(row, column))
         {
             throw false;
         }
@@ -544,6 +545,7 @@ bool Puzzle::loadFile(string fileName)
     }
 
     input.close();
+    loaded = true;
     return true;
 }
 

@@ -47,6 +47,8 @@ class Puzzle
         Group_pairs col;
         Group_pairs row;
         int number;
+        ///bool to tell if the puzzle has been uploaded yet.
+        bool loaded;
 
         ///These two function start the program
         void init(int num);
@@ -90,7 +92,7 @@ class Puzzle
         int flipValue(int value);
 
     public:
-        Puzzle(){};
+        Puzzle():loaded(false){};
         Puzzle(const Puzzle& other);
 
         /** Gets fileName from command prompt and then calls
