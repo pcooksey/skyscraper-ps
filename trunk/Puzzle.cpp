@@ -427,14 +427,17 @@ void Puzzle::print(bool loopPrint)
 
 bool Puzzle::loadFile()
 {
-    ifstream input;
     string name;
-    /*
     cout<<"Enter in File Name: ";
     cin>>name;
-    input.open(name.c_str());
-    */
-    input.open("6/puzzletest1.txt");
+    return loadFile(name);
+}
+
+bool Puzzle::loadFile(string fileName)
+{
+    ifstream input;
+    input.open(fileName.c_str());
+    //input.open("8/puzzlehard2.txt");
     if(input.fail())
     {
         return false;
