@@ -65,8 +65,8 @@ class Puzzle
         ///Returns the visibility score a row of numbers
         ///Ex: 3 2 4 1 = 2 visabiliy from the right
         int visableScore(vector<SkyScraper*> objects);
-        template<typename entry>
-        int visableScore(const vector<entry>& objects);
+        template<typename type>
+        int visableScore(const vector<type>& objects);
         ///Returns a row of pointers that can be fliped
         vector<SkyScraper*> getRow(int row, bool flip=false);
         ///Returns a column of pointers that can be fliped
@@ -109,6 +109,12 @@ class Puzzle
         ///Prints puzzle. Change @loopPrint to true if you
         ///want to see it print everytime it minus a value
         void print(bool loopPrint = false);
+
+        /** Public function to access variables */
+        const int& size() { return number;};
+        const Group_pairs& columnPairs() { return col;};
+        const Group_pairs& rowPairs() { return row;};
+        int entry(int row, int column);
 
 };
 
