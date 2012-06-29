@@ -289,10 +289,10 @@ int Puzzle::visableScore(vector<SkyScraper*> objects)
     return 0;
 }
 
-template<typename entry>
-int Puzzle::visableScore(const vector<entry>& objects)
+template<typename type>
+int Puzzle::visableScore(const vector<type>& objects)
 {
-    typename vector<entry>::const_iterator start = objects.begin(),
+    typename vector<type>::const_iterator start = objects.begin(),
                                  end = objects.end();
     int value(0), score(0);
     for(; start!=end; start++)
@@ -407,6 +407,59 @@ void Puzzle::remove(int num, vector<SkyScraper>& objects)
     }
 }
 
+bool Puzzle::correct()
+{
+    for(int column=0; column<number; column++)
+    {
+        int top = col[column].first;
+        int bottom = col[column].second;
+        if(top!=visableScore(getColumn(column)) && top!=0)
+            return false;
+        else if(bottom!=visableScore(getColumn(column,true)) && bottom!=0)
+            return false;
+        vector<SkyScraper*> columnPath = getColumn(column);
+        for(int i=1; i<number; i++)
+        {
+            if(checkOnly(i,columnPath)<0)
+            {
+                return false;
+            }
+        }
+    }
+
+    for(int rowNum=0; rowNum<number; rowNum++)
+    {
+        int left = row[rowNum].first;
+        int right = row[rowNum].second;
+        if(left!=visableScore(getRow(rowNum)) && left!=0)
+            return false;
+        else if(right!=visableScore(getRow(rowNum,true)) && right!=0)
+            return false;
+        vector<SkyScraper*> rowPath = getRow(rowNum);
+        for(int i=1; i<number; i++)
+        {
+            if(checkOnly(i,rowPath)<0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Puzzle::complete()
+{
+    for(int row=0; row<number; row++)
+    {
+        for(int col=0; col<number; col++)
+        {
+            if(!puzzle[row][col].found())
+                return false;
+        }
+    }
+    return true;
+}
+
 void Puzzle::print(bool loopPrint)
 {
     if(loopPrint)
@@ -494,55 +547,7 @@ bool Puzzle::loadFile(string fileName)
     return true;
 }
 
-bool Puzzle::correct()
+int Puzzle::entry(int row, int column)
 {
-    for(int column=0; column<number; column++)
-    {
-        int top = col[column].first;
-        int bottom = col[column].second;
-        if(top!=visableScore(getColumn(column)) && top!=0)
-            return false;
-        else if(bottom!=visableScore(getColumn(column,true)) && bottom!=0)
-            return false;
-        vector<SkyScraper*> columnPath = getColumn(column);
-        for(int i=1; i<number; i++)
-        {
-            if(checkOnly(i,columnPath)<0)
-            {
-                return false;
-            }
-        }
-    }
-
-    for(int rowNum=0; rowNum<number; rowNum++)
-    {
-        int left = row[rowNum].first;
-        int right = row[rowNum].second;
-        if(left!=visableScore(getRow(rowNum)) && left!=0)
-            return false;
-        else if(right!=visableScore(getRow(rowNum,true)) && right!=0)
-            return false;
-        vector<SkyScraper*> rowPath = getRow(rowNum);
-        for(int i=1; i<number; i++)
-        {
-            if(checkOnly(i,rowPath)<0)
-            {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-bool Puzzle::complete()
-{
-    for(int row=0; row<number; row++)
-    {
-        for(int col=0; col<number; col++)
-        {
-            if(!puzzle[row][col].found())
-                return false;
-        }
-    }
-    return true;
+    return puzzle[row][column];
 }
