@@ -39,9 +39,10 @@ using namespace std;
 class Puzzle
 {
     friend class PartialSolver;
-    private:
+    public:
         typedef vector< vector<SkyScraper> > Board;
         typedef vector< pair<int,int> > Group_pairs;
+    private:
         /// Puzzle board with the col & row numbers and the board number
         Board puzzle;
         Group_pairs col;
