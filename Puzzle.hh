@@ -93,8 +93,11 @@ class Puzzle
         Puzzle(){};
         Puzzle(const Puzzle& other);
 
-        ///Loads the file with the puzzle
+        /** Gets fileName from command prompt and then calls
+        *  and then calls loadFile(fileName); */
         bool loadFile();
+        ///Loads the file from the fileName give
+        bool loadFile(string fileName);
         ///Checks if the outside values are valid
         bool checkOutside();
         ///Function to solve the puzzle

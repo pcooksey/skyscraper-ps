@@ -2,24 +2,24 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="PartialSolver.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="7009" topLine="26" />
+		<Cursor position="4031" topLine="107" />
 	</File>
 	<File name="PartialSolver.hh" open="1" top="0" tabpos="4">
-		<Cursor position="1822" topLine="18" />
+		<Cursor position="3403" topLine="82" />
 	</File>
-	<File name="Puzzle.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="3963" topLine="190" />
+	<File name="Puzzle.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="11685" topLine="133" />
 	</File>
 	<File name="Puzzle.hh" open="1" top="0" tabpos="2">
-		<Cursor position="3106" topLine="36" />
+		<Cursor position="2399" topLine="63" />
 	</File>
-	<File name="SkyScraper.cc" open="1" top="0" tabpos="6">
-		<Cursor position="2198" topLine="99" />
+	<File name="SkyScraper.cc" open="0" top="0" tabpos="6">
+		<Cursor position="2934" topLine="68" />
 	</File>
 	<File name="SkyScraper.hh" open="0" top="0" tabpos="4">
-		<Cursor position="1679" topLine="32" />
+		<Cursor position="2044" topLine="35" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="1400" topLine="8" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1626" topLine="27" />
 	</File>
 </CodeBlocks_layout_file>
