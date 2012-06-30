@@ -93,7 +93,8 @@ class Puzzle
         int flipValue(int value);
 
     public:
-        Puzzle():loaded(false){};
+        Puzzle():loaded(false){}
+        Puzzle(int num);
         Puzzle(const Puzzle& other);
 
         /** Gets fileName from command prompt and then calls
