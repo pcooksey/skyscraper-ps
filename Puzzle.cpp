@@ -28,6 +28,15 @@
 #include "Puzzle.hh"
 using namespace std;
 
+Puzzle::Puzzle(int num)
+    :loaded(false)
+{
+    init(num);
+    col = vector< pair<int,int> >(num, make_pair(0,0));
+    row = vector< pair<int,int> >(num, make_pair(0,0));
+    loaded = true;
+}
+
 Puzzle::Puzzle(const Puzzle& other)
 {
     number = other.number;
