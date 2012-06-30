@@ -105,6 +105,10 @@ class PartialSolver
         *   used getting data on all possible puzzles for some n.
         */
         void boundaryFinder();
+        /**
+        *   Returns all of the solvedPuzzles
+        */
+        const list<Puzzle>& solvedPuzzles() { return solved; }
 };
 
 #endif
