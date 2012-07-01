@@ -115,9 +115,9 @@ class Puzzle
         void print(bool loopPrint = false);
 
         /** Public function to access variables */
-        const int& size() { return number;};
-        const Group_pairs& columnPairs() { return col;};
-        const Group_pairs& rowPairs() { return row;};
+        const int& size() { return number;}
+        const Group_pairs& columnPairs() { return col;}
+        const Group_pairs& rowPairs() { return row;}
         int entry(int row, int column);
 
 };
