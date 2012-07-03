@@ -37,6 +37,21 @@ Puzzle::Puzzle(int num)
     loaded = true;
 }
 
+Puzzle::Puzzle(const Group_pairs& col, const Group_pairs& row)
+{
+    if(col.size()==row.size())
+    {
+        init(col.size());
+        this->col = col;
+        this->row = row;
+        loaded = true;
+    }
+    else
+    {
+        Puzzle(col.size());
+    }
+}
+
 Puzzle::Puzzle(const Puzzle& other)
 {
     number = other.number;

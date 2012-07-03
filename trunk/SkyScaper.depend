@@ -63,10 +63,10 @@
 1338861047 source:c:\users\philip\desktop\c++\skycraper-ps\partialsolver.cpp
 	"PartialSolver.hh"
 
-1341022045 source:c:\users\philip\desktop\c++\skyscraper-ps\puzzle.cpp
+1341277408 source:c:\users\philip\desktop\c++\skyscraper-ps\puzzle.cpp
 	"Puzzle.hh"
 
-1341181780 c:\users\philip\desktop\c++\skyscraper-ps\puzzle.hh
+1341277576 c:\users\philip\desktop\c++\skyscraper-ps\puzzle.hh
 	"SkyScraper.hh"
 	<stdlib.h>
 	<iostream>
