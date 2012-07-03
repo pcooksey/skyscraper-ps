@@ -79,8 +79,6 @@ class Puzzle
         int checkOnly(int num, vector<SkyScraper*>& box);
 
 
-        ///Sets a number @num for box at @row & @column
-        bool set(int row, int column, int num);
         ///Removes a possible number @num from box at @row & @column
         bool remove(int row, int column, int num);
         ///Removes @num from all boxes in row @row
@@ -95,7 +93,12 @@ class Puzzle
     public:
         Puzzle():loaded(false){}
         Puzzle(int num);
+        Puzzle(const Group_pairs& col, const Group_pairs& row);
         Puzzle(const Puzzle& other);
+
+        ///Sets a number @num for box at @row & @column
+        ///@throw bool if setting the number cause the puzzle to be incorrect
+        bool set(int row, int column, int num);
 
         /** Gets fileName from command prompt and then calls
         *  and then calls loadFile(fileName); */
