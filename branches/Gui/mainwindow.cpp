@@ -1,0 +1,295 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    puzzle(NULL), pSolver(NULL), progress(NULL), watcher(NULL),
+    size(0)
+{
+    ui->setupUi(this);
+    this->setWindowTitle("Skyscraper-ps");
+
+    QGridLayout *layout = ui->puzzle;
+    QLCDNumber *entry = new QLCDNumber;
+    entry->setDigitCount(3);
+    entry->display(".o0");
+    entry->setSegmentStyle(QLCDNumber::Flat);
+    layout->addWidget(entry,0,0);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+    if(puzzle)
+        delete puzzle;
+    if(pSolver)
+        delete pSolver;
+    if(progress)
+        delete progress;
+    if(watcher)
+        delete watcher;
+}
+
+bool MainWindow::createPuzzle()
+{
+    QGridLayout *layout = ui->puzzle;
+    Puzzle::Group_pairs col;
+    Puzzle::Group_pairs row;
+    for(int i=0; i<size; i++)
+    {
+        int top, bottom, right, left;
+        top = ((LCDEntry*)layout->itemAtPosition(0,i+1)->widget())->intValue();
+        bottom = ((LCDEntry*)layout->itemAtPosition(size+1,i+1)->widget())->intValue();
+        right = ((LCDEntry*)layout->itemAtPosition(i+1,0)->widget())->intValue();
+        left = ((LCDEntry*)layout->itemAtPosition(i+1,size+1)->widget())->intValue();
+        col.push_back(std::make_pair(top,bottom));
+        row.push_back(std::make_pair(right,left));
+    }
+    setPuzzle(new Puzzle(col,row));
+
+    for(int row=0; row<size; ++row)
+    {
+        for(int col=0; col<size; ++col)
+        {
+            int value = ((LCDEntry*)layout->itemAtPosition(row+1,col+1)->widget())->intValue();
+            if(value!=0)
+            {
+                try
+                {
+                    puzzle->set(row,col,value);
+                } catch(bool& err) {
+                    warning("Failed","Puzzle is incorrect");
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+void MainWindow::setPuzzle(Puzzle* puzzle)
+{
+    deletePuzzle();
+    this->puzzle = puzzle;
+}
+
+void MainWindow::solve()
+{
+    if(puzzle!=NULL)
+    {
+        if(createPuzzle())
+        {
+            try
+            {
+                puzzle->solve();
+                displayConstraints();
+                displayEntries();
+                if(puzzle->complete() && puzzle->correct())
+                {
+                    if(puzzle->correct())
+                    {
+                        information("Solved","Completely Solved!");
+                    } else {
+                        warning("Error","Puzzle not solved correctly");
+                    }
+                } else {
+                    information("Partially Solved","Try the partial solver to complete the puzzle");
+                    ui->partialSolver->setEnabled(true);
+                    ui->actionPartial_Solver->setEnabled(true);
+                }
+            } catch (bool &err) {
+                warning("Error","Puzzle cannot be solved!");
+            }
+        }
+    }
+    else {
+        warning("Warning","No puzzle loaded!");
+    }
+}
+
+void MainWindow::partialSolver()
+{
+    if(puzzle!=NULL)
+    {
+        if(pSolver!=NULL)
+            delete pSolver;
+        pSolver = new PartialSolver(*puzzle);
+        if(watcher==NULL)
+        {
+            watcher = new QFutureWatcher<void>();
+            connect(watcher, SIGNAL(finished()), this, SLOT(finishedPartialSolver()));
+        }
+        QFuture<void> future = QtConcurrent::run(pSolver, &PartialSolver::solve);
+        watcher->setFuture(future);
+        if(progress==NULL)
+        {
+            progress = new QProgressDialog("Solving puzzle...", "Cancel", 0, 0, this);
+            progress->setWindowModality(Qt::WindowModal);
+            progress->setCancelButton(0);
+        }
+        progress->show();
+    }
+}
+
+void MainWindow::finishedPartialSolver()
+{
+    progress->cancel();
+    const list<Puzzle>& solved = pSolver->solvedPuzzles();
+    if(solved.size()==1)
+    {
+        setPuzzle(new Puzzle(solved.front()));
+        printPuzzle();
+        information("Completed","Finished solving the puzzle!");
+    }
+    else {
+        information("Completed","Finished with multiple solutions!");
+        pSolver->boundaryFinder();
+    }
+}
+
+void MainWindow::printPuzzle()
+{
+    checkForDeletion();
+    displayConstraints();
+    displayEntries();
+}
+
+void MainWindow::checkForDeletion()
+{
+    if(size != puzzle->size())
+    {
+        QLayout *layout = ui->puzzle;
+        QLayoutItem *child;
+        while ( (child = layout->takeAt(0)) != 0) {
+            delete child->widget();
+            delete child;
+        }
+    }
+    size = puzzle->size();
+}
+
+void MainWindow::displayConstraints()
+{
+    Puzzle::Group_pairs col = puzzle->columnPairs();
+    Puzzle::Group_pairs row = puzzle->rowPairs();
+
+    for(int i=0; i<size; i++)
+    {
+        LCDEntry* num;
+        QPalette *lcdpalette = new QPalette;
+        lcdpalette->setColor(QPalette::Background, QColor(211, 211, 211));
+        num = addLCD(col.front().first,0,i+1);
+        num->setPalette(*lcdpalette);
+        num->setAutoFillBackground(true);
+        num = addLCD(col.front().second,size+1,i+1);
+        num->setPalette(*lcdpalette);
+        num->setAutoFillBackground(true);
+        num = addLCD(row.front().first,i+1,0);
+        num->setPalette(*lcdpalette);
+        num->setAutoFillBackground(true);
+        num = addLCD(row.front().second,i+1,size+1);
+        num->setPalette(*lcdpalette);
+        num->setAutoFillBackground(true);
+
+        col.erase(col.begin());
+        row.erase(row.begin());
+    }
+}
+
+void MainWindow::displayEntries()
+{
+    for(int row=0; row<size; ++row)
+    {
+        for(int col=0; col<size; ++col)
+        {
+            addLCD(puzzle->entry(row,col),row+1,col+1);
+        }
+    }
+}
+
+LCDEntry* MainWindow::addLCD(int num, int row, int col)
+{
+    QGridLayout *layout = ui->puzzle;
+    if(layout->itemAtPosition(row,col))
+    {
+        LCDEntry *item = (LCDEntry*)layout->itemAtPosition(row,col)->widget();
+        item->display(num);
+        return item;
+    }
+    LCDEntry *entry = new LCDEntry(size, num);
+    layout->addWidget(entry,row,col);
+    return entry;
+}
+
+void MainWindow::deletePuzzle()
+{
+    if(puzzle!=NULL)
+    {
+        delete puzzle;
+        ui->partialSolver->setEnabled(false);
+        ui->actionPartial_Solver->setEnabled(false);
+    }
+}
+
+void MainWindow::warning(QString title, QString message)
+{
+    QMessageBox messageBox;
+    messageBox.warning(0,title,message);
+    messageBox.setFixedSize(500,200);
+}
+
+void MainWindow::information(QString title, QString message)
+{
+    QMessageBox messageBox;
+    messageBox.information(0,title,message);
+    messageBox.setFixedSize(500,200);
+}
+
+void MainWindow::on_actionOpen_File_triggered()
+{
+    OpenFile getFile(this);
+    getFile.setModal(true);
+    getFile.exec();
+    QString path = getFile.getPath();
+    if(path!="")
+    {
+        /** create puzzle with the file name here */
+        setPuzzle(new Puzzle());
+        puzzle->loadFile(path.toStdString());
+        printPuzzle();
+    }
+}
+
+void MainWindow::on_actionSolve_triggered()
+{
+    solve();
+}
+
+void MainWindow::on_solve_clicked()
+{
+    solve();
+}
+
+void MainWindow::on_partialSolver_clicked()
+{
+    partialSolver();
+}
+
+void MainWindow::on_actionPartial_Solver_triggered()
+{
+    partialSolver();
+}
+
+void MainWindow::on_actionCreate_Puzzle_triggered()
+{
+    bool ok;
+    int num = QInputDialog::getInt(this, "Puzzle Size",
+                          tr("Number:"), 4, 2, 100, 1, &ok);
+    if (ok)
+    {
+        deletePuzzle();
+        puzzle = new Puzzle(num);
+        printPuzzle();
+    }
+}
