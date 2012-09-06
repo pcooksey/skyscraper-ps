@@ -83,8 +83,7 @@ void MainWindow::solve()
             try
             {
                 puzzle->solve();
-                displayConstraints();
-                displayEntries();
+                printPuzzle();
                 if(puzzle->complete() && puzzle->correct())
                 {
                     if(puzzle->correct())
@@ -153,6 +152,7 @@ void MainWindow::printPuzzle()
     checkForDeletion();
     displayConstraints();
     displayEntries();
+    displayNewConstraints();
 }
 
 void MainWindow::checkForDeletion()
@@ -208,6 +208,34 @@ void MainWindow::displayEntries()
     }
 }
 
+void MainWindow::displayNewConstraints()
+{
+    list<int> numbers;
+    for(int x=0; x<size; x++)
+    {
+        for(int y=0; y<size; y++)
+        {
+            numbers.push_back(puzzle->entry(y,x));
+        }
+        int colUp = visableScore(numbers);
+        changeLCD(colUp,0,x+1);
+        numbers.reverse();
+        int colDown = visableScore(numbers);
+        changeLCD(colDown,size+1,x+1);
+        numbers.clear();
+        for(int y=0; y<size; y++)
+        {
+            numbers.push_back(puzzle->entry(x,y));
+        }
+        int rowLeft = visableScore(numbers);
+        changeLCD(rowLeft,x+1,0);
+        numbers.reverse();
+        int rowRight = visableScore(numbers);
+        changeLCD(rowRight,x+1,size+1);
+        numbers.clear();
+    }
+}
+
 LCDEntry* MainWindow::addLCD(int num, int row, int col)
 {
     QGridLayout *layout = ui->puzzle;
@@ -215,11 +243,28 @@ LCDEntry* MainWindow::addLCD(int num, int row, int col)
     {
         LCDEntry *item = (LCDEntry*)layout->itemAtPosition(row,col)->widget();
         item->display(num);
+        QPalette p = item->palette();
+        p.setColor(QPalette::WindowText, QColor(0,0,0));
+        item->setPalette(p);
         return item;
     }
     LCDEntry *entry = new LCDEntry(size, num);
     layout->addWidget(entry,row,col);
     return entry;
+}
+
+LCDEntry* MainWindow::changeLCD(int num, int row, int col)
+{
+    QGridLayout *layout = ui->puzzle;
+    LCDEntry *item = (LCDEntry*)layout->itemAtPosition(row,col)->widget();
+    if(num!=0 && item->intValue()==0)
+    {
+        item->display(num);
+        QPalette p = item->palette();
+        p.setColor(QPalette::WindowText, QColor(255,0,0));
+        item->setPalette(p);
+    }
+    return item;
 }
 
 void MainWindow::deletePuzzle()
@@ -230,6 +275,29 @@ void MainWindow::deletePuzzle()
         ui->partialSolver->setEnabled(false);
         ui->actionPartial_Solver->setEnabled(false);
     }
+}
+
+int MainWindow::visableScore(list<int>& objects)
+{
+    list<int>::iterator start = objects.begin(),
+                                 end = objects.end();
+    int value(0), score(0);
+    for(; start!=end; start++)
+    {
+        if((*start)==0)
+            return 0;
+        else if((*start)>value)
+        {
+            value = (*start);
+            score++;
+        }
+        if(value==size)
+        {
+            return score;
+        }
+    }
+    /// Should reach here only if not complete vector
+    return 0;
 }
 
 void MainWindow::warning(QString title, QString message)

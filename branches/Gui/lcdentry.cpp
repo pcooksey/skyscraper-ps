@@ -1,6 +1,7 @@
 #include "lcdentry.h"
 
 LCDEntry::LCDEntry(int size, int num)
+    :original(0,0,0)
 {
     this->size = size;
     int length = QString::number(size).length();
@@ -40,6 +41,7 @@ void LCDEntry::mousePressEvent(QMouseEvent *)
 void LCDEntry::enterEvent(QEvent*)
 {
     QPalette p = this->palette();
+    original = p.color(QPalette::WindowText);
     p.setColor(QPalette::WindowText, QColor(255,0,0));
     setPalette(p);
 }
@@ -47,6 +49,6 @@ void LCDEntry::enterEvent(QEvent*)
 void LCDEntry::leaveEvent(QEvent*)
 {
     QPalette p = this->palette();
-    p.setColor(QPalette::WindowText, QColor(0, 0, 0));
+    p.setColor(QPalette::WindowText, original);
     setPalette(p);
 }

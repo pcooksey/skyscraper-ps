@@ -13,6 +13,7 @@ class LCDEntry : public QLCDNumber
         int size;
         int num;
         bool locked;
+        QColor original;
 
         void lockedDisplay(int num);
 
