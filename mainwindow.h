@@ -54,8 +54,12 @@ private:
     void checkForDeletion();
     void displayConstraints();
     void displayEntries();
+    void displayNewConstraints();
     LCDEntry* addLCD(int num, int row, int col);
+    LCDEntry* changeLCD(int num, int row, int col);
     void deletePuzzle();
+
+    int visableScore(list<int>& objects);
 
     //Popups
     void warning(QString title, QString message);
