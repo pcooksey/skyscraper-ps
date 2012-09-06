@@ -142,7 +142,7 @@ void MainWindow::finishedPartialSolver()
         information("Completed","Finished solving the puzzle!");
     }
     else {
-        information("Completed","Finished with multiple solutions!");
+        information("Completed", QString("Finished with multiple solutions! (%1)").arg(solved.size()));
         pSolver->boundaryFinder();
     }
 }
