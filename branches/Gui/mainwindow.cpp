@@ -361,3 +361,29 @@ void MainWindow::on_actionCreate_Puzzle_triggered()
         printPuzzle();
     }
 }
+
+void MainWindow::on_actionRow_Genetor_triggered()
+{
+    bool ok;
+    if(puzzle!=NULL)
+    {
+        int num = QInputDialog::getInt(this, "Pick a number",
+                              tr("Column positive(1) | Row Negative(-1):"), 1, -size, size, 1, &ok);
+        if(ok && num!=0)
+        {
+            bool column = true;
+            if(num<0)
+            {
+                column = false;
+                num = -num;
+            }
+            list<vector<SkyScraper> > possible = puzzle->generatorRows(num-1, column);
+            RowGenerator window(possible,this);
+            window.setModal(true);
+            window.exec();
+        }
+    }
+    else {
+        warning("Warning","No puzzle loaded!");
+    }
+}

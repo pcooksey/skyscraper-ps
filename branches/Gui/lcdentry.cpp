@@ -38,6 +38,21 @@ void LCDEntry::mousePressEvent(QMouseEvent *)
         lockedDisplay(value+1);
 }
 
+void LCDEntry::wheelEvent(QWheelEvent* event)
+{
+    if(locked)
+        return;
+    int move = event->delta();
+    move = (move>0)?1:-1;
+    int value = intValue();
+    if(value+move>size)
+        lockedDisplay(0);
+    else if(value+move<0)
+        lockedDisplay(size);
+    else
+        lockedDisplay(value+move);
+}
+
 void LCDEntry::enterEvent(QEvent*)
 {
     QPalette p = this->palette();

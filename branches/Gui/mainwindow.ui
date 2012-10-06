@@ -83,6 +83,7 @@
     </property>
     <addaction name="actionOpen_File"/>
     <addaction name="actionCreate_Puzzle"/>
+    <addaction name="actionRow_Genetor"/>
    </widget>
    <widget class="QMenu" name="menuPuzzle">
     <property name="title">
@@ -124,6 +125,11 @@
   <action name="actionCreate_Puzzle">
    <property name="text">
     <string>Create Puzzle</string>
+   </property>
+  </action>
+  <action name="actionRow_Genetor">
+   <property name="text">
+    <string>Row Generator</string>
    </property>
   </action>
  </widget>
