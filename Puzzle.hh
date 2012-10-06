@@ -70,6 +70,9 @@ class Puzzle
         int visableScore(vector<SkyScraper*> objects);
         template<typename type>
         int visableScore(const vector<type>& objects);
+        ///Checks the objects in reverse for the other way score.
+        template<typename type>
+        int visableScoreReverse(const vector<type>& objects);
         ///Returns a row of pointers that can be fliped
         vector<SkyScraper*> getRow(int row, bool flip=false);
         ///Returns a column of pointers that can be fliped
@@ -122,6 +125,10 @@ class Puzzle
         const Group_pairs& columnPairs() { return col;}
         const Group_pairs& rowPairs() { return row;}
         int entry(int row, int column);
+
+        /** Public Generator Function */
+        ///if @column is true or false then the @num is the row or column number
+        list<vector<SkyScraper> > generatorRows(int num, bool column);
 
 };
 

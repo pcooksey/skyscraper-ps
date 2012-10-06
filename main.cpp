@@ -26,6 +26,8 @@
 */
 
 #include <iostream>
+#include <list>
+#include <vector>
 #include "Puzzle.hh"
 #include "PartialSolver.hh"
 using namespace std;
@@ -36,6 +38,18 @@ int main()
     bool success = puzzle.loadFile();
     if(success)
     {
+        list<vector<SkyScraper> > possible = puzzle.generatorRows(0, true);
+        list<vector<SkyScraper>  >::iterator begin = possible.begin(), end = possible.end();
+        for(; begin!=end; begin++)
+        {
+            for(int i=0; i<begin->size(); i++)
+            {
+                cout<<(*begin)[i]<<" ";
+            }
+            cout<<endl;
+        }
+
+        /*
         puzzle.checkOutside();
         try
         {
@@ -62,7 +76,7 @@ int main()
         } catch (bool &err) {
             cout<<"Failed to solve!";
         }
-
+        */
     }
     else
     {
