@@ -614,7 +614,6 @@ list<vector<SkyScraper> > Puzzle::generatorRows(int num, bool column)
         row = getRow(num);
         values = this->row[num];
     }
-    cout<<values.first<<" "<<values.second<<endl;
     vector<SkyScraper> start(number,number);
     ///Checking for values that are already found
     for(int i=1; i<=number; i++)
