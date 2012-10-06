@@ -18,6 +18,7 @@ class LCDEntry : public QLCDNumber
         void lockedDisplay(int num);
 
         void mousePressEvent(QMouseEvent*);
+        void wheelEvent(QWheelEvent* event);
         void enterEvent(QEvent*);
         void leaveEvent(QEvent*);
 };

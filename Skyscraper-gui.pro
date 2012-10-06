@@ -16,14 +16,17 @@ SOURCES += main.cpp\
     Skyscraper/SkyScraper.cc \
     Skyscraper/Puzzle.cpp \
     Skyscraper/PartialSolver.cpp \
-    lcdentry.cpp
+    lcdentry.cpp \
+    rowgenerator.cpp
 
 HEADERS  += mainwindow.h \
     openfile.h \
     Skyscraper/SkyScraper.hh \
     Skyscraper/Puzzle.hh \
     Skyscraper/PartialSolver.hh \
-    lcdentry.h
+    lcdentry.h \
+    rowgenerator.h
 
 FORMS    += mainwindow.ui \
-    openfile.ui
+    openfile.ui \
+    rowgenerator.ui

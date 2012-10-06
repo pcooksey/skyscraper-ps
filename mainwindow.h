@@ -5,6 +5,7 @@
 #include <QtGui>
 #include "openfile.h"
 #include "lcdentry.h"
+#include "rowgenerator.h"
 #include "Skyscraper/Puzzle.hh"
 #include "Skyscraper/PartialSolver.hh"
 
@@ -34,6 +35,8 @@ private slots:
     void on_actionCreate_Puzzle_triggered();
 
     void finishedPartialSolver();
+
+    void on_actionRow_Genetor_triggered();
 
 private:
     Ui::MainWindow *ui;
