@@ -336,6 +336,28 @@ int Puzzle::visableScore(const vector<type>& objects)
     return 0;
 }
 
+template<typename type>
+int Puzzle::visableScoreReverse(const vector<type>& objects)
+{
+    typename vector<type>::const_reverse_iterator start = objects.rbegin(),
+                                 end = objects.rend();
+    int value(0), score(0);
+    for(; start!=end; start++)
+    {
+        if((*start)>value)
+        {
+            value = (*start);
+            score++;
+        }
+        if(value==number)
+        {
+            return score;
+        }
+    }
+    /// Should never reach here
+    return 0;
+}
+
 vector<SkyScraper*> Puzzle::getRow(int row, bool flip)
 {
     vector<SkyScraper*> box(number);
@@ -576,4 +598,67 @@ bool Puzzle::loadFile(string fileName)
 int Puzzle::entry(int row, int column)
 {
     return puzzle[row][column];
+}
+
+list<vector<SkyScraper> > Puzzle::generatorRows(int num, bool column)
+{
+    pair<int,int> values;
+    vector<SkyScraper*> row;
+    if(column)
+    {
+        row = getColumn(num);
+        values = col[num];
+    }
+    else
+    {
+        row = getRow(num);
+        values = this->row[num];
+    }
+    cout<<values.first<<" "<<values.second<<endl;
+    vector<SkyScraper> start(number,number);
+    ///Checking for values that are already found
+    for(int i=1; i<=number; i++)
+    {
+        int index = checkOnly(i,row);
+        if(index!=-1)
+        {
+            start[index].set(i);
+            remove(i, start);
+        }
+    }
+    list< vector<SkyScraper> > possible;
+    list< vector<SkyScraper> > graph;
+    graph.push_back(start);
+    while(!graph.empty())
+    {
+        bool done = true;
+        vector<SkyScraper>& path = graph.front();
+        for(int i=0; i<number; i++)
+        {
+            if(!path[i].found())
+            {
+                const list<int>& possible = path[i].isPossible();
+                list<int>::const_iterator it = possible.begin();
+                for(; it!=possible.end(); it++)
+                {
+                    vector<SkyScraper> temp(path);
+                    temp[i].set((*it));
+                    remove((*it), temp);
+                    graph.push_back(temp);
+                }
+                done = false;
+                break;
+            }
+        }
+        if(done)
+        {
+            int nTemp = visableScore(path);
+            int rnTemp = visableScoreReverse(path);
+            if(nTemp==values.first && rnTemp==values.second)
+                possible.push_back(path);
+        }
+        graph.pop_front();
+    }
+    return possible;
+
 }
