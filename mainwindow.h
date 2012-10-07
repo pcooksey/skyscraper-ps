@@ -38,12 +38,15 @@ private slots:
 
     void on_actionRow_Genetor_triggered();
 
+    void generateRows(int num);
+
 private:
     Ui::MainWindow *ui;
     Puzzle *puzzle;
     PartialSolver *pSolver;
     QProgressDialog *progress;
     QFutureWatcher<void> *watcher;
+    QSignalMapper *signalMapper;
     int size;
 
     bool createPuzzle();
@@ -61,6 +64,8 @@ private:
     LCDEntry* addLCD(int num, int row, int col);
     LCDEntry* changeLCD(int num, int row, int col);
     void deletePuzzle();
+
+    void displayGeneratedRows(int num);
 
     int visableScore(list<int>& objects);
 

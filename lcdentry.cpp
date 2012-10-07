@@ -27,15 +27,9 @@ void LCDEntry::lockedDisplay(int num)
     this->QLCDNumber::display(num);
 }
 
-void LCDEntry::mousePressEvent(QMouseEvent *)
+void LCDEntry::mouseDoubleClickEvent(QMouseEvent *)
 {
-    if(locked)
-        return;
-    int value = intValue();
-    if(value+1>size)
-        lockedDisplay(0);
-    else
-        lockedDisplay(value+1);
+    emit doubleclickedevent();
 }
 
 void LCDEntry::wheelEvent(QWheelEvent* event)
