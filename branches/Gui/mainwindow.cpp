@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    puzzle(NULL), pSolver(NULL), progress(NULL), watcher(NULL),
+    puzzle(NULL), pSolver(NULL), progress(NULL), watcher(NULL), signalMapper(NULL),
     size(0)
 {
     ui->setupUi(this);
@@ -29,6 +29,8 @@ MainWindow::~MainWindow()
         delete progress;
     if(watcher)
         delete watcher;
+    if(signalMapper)
+        delete signalMapper;
 }
 
 bool MainWindow::createPuzzle()
@@ -174,6 +176,7 @@ void MainWindow::displayConstraints()
     Puzzle::Group_pairs col = puzzle->columnPairs();
     Puzzle::Group_pairs row = puzzle->rowPairs();
 
+    signalMapper = new QSignalMapper(this);
     for(int i=0; i<size; i++)
     {
         LCDEntry* num;
@@ -182,19 +185,36 @@ void MainWindow::displayConstraints()
         num = addLCD(col.front().first,0,i+1);
         num->setPalette(*lcdpalette);
         num->setAutoFillBackground(true);
+        //Adds signal
+        signalMapper->disconnect(num, 0, 0, 0);
+        connect(num, SIGNAL(doubleclickedevent()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(num, i+1);
         num = addLCD(col.front().second,size+1,i+1);
         num->setPalette(*lcdpalette);
         num->setAutoFillBackground(true);
+        //Adds signal
+        signalMapper->disconnect(num, 0, 0, 0);
+        connect(num, SIGNAL(doubleclickedevent()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(num, i+1);
         num = addLCD(row.front().first,i+1,0);
         num->setPalette(*lcdpalette);
         num->setAutoFillBackground(true);
+        //Adds signal
+        signalMapper->disconnect(num, 0, 0, 0);
+        connect(num, SIGNAL(doubleclickedevent()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(num, -(i+1));
         num = addLCD(row.front().second,i+1,size+1);
         num->setPalette(*lcdpalette);
         num->setAutoFillBackground(true);
-
+        //Adds signal
+        signalMapper->disconnect(num, 0, 0, 0);
+        connect(num, SIGNAL(doubleclickedevent()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(num, -(i+1));
         col.erase(col.begin());
         row.erase(row.begin());
     }
+    connect(signalMapper, SIGNAL(mapped(int)),
+                 this, SLOT(generateRows(int)));
 }
 
 void MainWindow::displayEntries()
@@ -385,5 +405,22 @@ void MainWindow::on_actionRow_Genetor_triggered()
     }
     else {
         warning("Warning","No puzzle loaded!");
+    }
+}
+
+void MainWindow::generateRows(int num)
+{
+    if(num!=0)
+    {
+        bool column = true;
+        if(num<0)
+        {
+            column = false;
+            num = -num;
+        }
+        list<vector<SkyScraper> > possible = puzzle->generatorRows(num-1, column);
+        RowGenerator window(possible,this);
+        window.setModal(true);
+        window.exec();
     }
 }
