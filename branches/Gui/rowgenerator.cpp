@@ -107,9 +107,14 @@ void RowGenerator::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 
 void RowGenerator::on_pushButton_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this, "Save Rows",
-                                                    QApplication::applicationFilePath(),
-                                                    "Text files (*.txt);; CVS files (*.csv)");
+    QFileDialog fileDialog(this);
+    fileDialog.setDefaultSuffix("csv");
+    fileDialog.setNameFilter("CVS files (*.csv);; Text files (*.txt)");
+    fileDialog.setDirectory(QApplication::applicationFilePath());
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.exec();
+    QString filename = fileDialog.selectedFiles().first();
+
     QFile file( filename );
     if(filename!="" && file.open( QIODevice::WriteOnly ))
     {
