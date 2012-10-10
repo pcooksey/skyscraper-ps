@@ -9,7 +9,6 @@ QT       += core gui
 TARGET = Skyscraper-gui
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     openfile.cpp \
