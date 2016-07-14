@@ -3,12 +3,19 @@ A program that can solve any general size Skyscraper puzzle. The code is written
 
 <img src='http://skyscraper-ps.googlecode.com/files/Skyscraper-ps-gui.jpg' alt='Logo' />
 
-### Downloads: ###
+### Install for Linux ###
+Please download qt creator: https://www.qt.io/download-open-source/
+And install it on your system
+Download source code into some file location, lets say /home/skyscraper-ps
+cd /home/skyscraper-ps
+Run <b> make </b>
+Run <b> ./skyscraper-ps </b>
 
-<b>Featured: Skyscraper-ps-gui-1.6.msi</b>: Windows installer for GUI version 1.6. New features added are displaying all possible rows and columns when double clicking side constraints and the mouse scroll wheel is now used to change numbers in the puzzle.
+### Versions ###
 
-<b>Deprecated: Skyscraper-ps-gui-1.5.msi</b>: Windows installer with graphical user interface
+<b> Skyscraper-ps Gui 1.6 </b> New features added are displaying all possible rows and columns when double clicking side constraints and the mouse scroll wheel is now used to change numbers in the puzzle.
 
-<b>Deprecated: skyscraper-ps-1.4.msi</b>: Windows installer for command line tool
+<b> Skyscraper-ps Gui 1.5 </b> Graphical user interface
 
-<b>Deprecated: skyscraper-ps-1.4.zip</b>: Removed finding min and max when the brute force solver could just find the boundary condition number itself. This increased the speed slightly as it gave the puzzle solver more information about the puzzle. Fixed partial solver finding incorrect solution by fixing the puzzle correct function. Now checks to see if each number is the only number in each row and column. Increased the speed for finding partial solutions by skipping any boundary condition with a value of 0 as it gives the solver no information. Correct boundary finder function to display information correctly.
+<b> Skyscraper-ps Gui 1.4 </b> Removed finding min and max when the brute force solver could just find the boundary condition number itself. This increased the speed slightly as it gave the puzzle solver more information about the puzzle. Fixed partial solver finding incorrect solution by fixing the puzzle correct function. Now checks to see if each number is the only number in each row and column. Increased the speed for finding partial solutions by skipping any boundary condition with a value of 0 as it gives the solver no information. Correct boundary finder function to display information correctly.
+ 
