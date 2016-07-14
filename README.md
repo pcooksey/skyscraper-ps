@@ -5,13 +5,15 @@ A program that can solve any general size Skyscraper puzzle. The code is written
 
 ### Install for Linux ###
 
-Please download qt creator: https://www.qt.io/download-open-source/
+Please [download](https://www.qt.io/download-open-source/) qt creator
 
 And install it on your system
 
 Download source code into some file location, lets say /home/skyscraper-ps
 
 cd /home/skyscraper-ps
+
+Run <b> qmake skyscraper-ps.pro </b>
 
 Run <b> make </b>
 
