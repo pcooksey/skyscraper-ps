@@ -1,5 +1,5 @@
 #include "rowgenerator.h"
-#include "ui_rowgenerator.h"
+#include "ui_RowGenerator.h"
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
