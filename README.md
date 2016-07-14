@@ -4,11 +4,17 @@ A program that can solve any general size Skyscraper puzzle. The code is written
 <img src='http://skyscraper-ps.googlecode.com/files/Skyscraper-ps-gui.jpg' alt='Logo' />
 
 ### Install for Linux ###
+
 Please download qt creator: https://www.qt.io/download-open-source/
+
 And install it on your system
+
 Download source code into some file location, lets say /home/skyscraper-ps
+
 cd /home/skyscraper-ps
+
 Run <b> make </b>
+
 Run <b> ./skyscraper-ps </b>
 
 ### Versions ###
