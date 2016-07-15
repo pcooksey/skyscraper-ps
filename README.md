@@ -19,6 +19,22 @@ Run <b> make </b>
 
 Run <b> ./skyscraper-ps </b>
 
+### Skyscraper-ps ###
+
+Load a puzzle or create a puzzle to start. Then clikc solve to reduce the problem
+using a constraint based solver. This does not always lead to a solved solution.
+This may be because the puzzle has multiple solutions, not solvable, or the constraints
+where not enought to solve the problem. The parital solver will do a graph based
+search to find the solution(s). 
+
+If there are multiple solutions you will find two files in the directory.
+
+<b>BoundaryKeys.csv</b>: This has all the possible boundary solutions for the puzzle.
+There can be multiple latin square solutions with the same boundary numbers, which is 
+indicated by the number next to the solutions.
+
+<b>BoundaryStats.csv</b>: This shows some stats on the boundary solutions.
+
 ### Versions ###
 
 <b> Skyscraper-ps Gui 1.6 </b> New features added are displaying all possible rows and columns when double clicking side constraints and the mouse scroll wheel is now used to change numbers in the puzzle.
