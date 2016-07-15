@@ -21,19 +21,23 @@ Run <b> ./skyscraper-ps </b>
 
 ### Skyscraper-ps ###
 
-Load a puzzle or create a puzzle to start. Then clikc solve to reduce the problem
-using a constraint based solver. This does not always lead to a solved solution.
+Load a puzzle or create a puzzle to start. Then click <b>solve</b> to reduce the problem
+using a constraint based solver. This does not always solve the solution completely.
 This may be because the puzzle has multiple solutions, not solvable, or the constraints
-where not enought to solve the problem. The parital solver will do a graph based
-search to find the solution(s). 
+where not enough to solve the problem. The parital solver will do a graph based
+search to find the possible solution(s). 
 
 If there are multiple solutions you will find two files in the directory.
 
 <b>BoundaryKeys.csv</b>: This has all the possible boundary solutions for the puzzle.
 There can be multiple latin square solutions with the same boundary numbers, which is 
-indicated by the number next to the solutions.
+indicated by the number next to the solutions in the file.
 
 <b>BoundaryStats.csv</b>: This shows some stats on the boundary solutions.
+Total number of Laing Squares.
+Total number of Boundaries.
+Total Unique Boundaries.
+Upper Limit of Branching (max number of latin squares with the same boundaries).
 
 ### Versions ###
 
